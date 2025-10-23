@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // Import ref & onMounted
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+import { toast, type ToastOptions } from 'vue3-toastify'
 
 // Import Api Client
 import api from '../../api/index'
@@ -22,8 +23,22 @@ onMounted(() => {
 const deleteMhsData = async (id) => {
   await api.delete(`/api/mahasiswa/${id}`).then(() => {
     fetchDataMhs()
+    toast("🎉 Mahasiswa Berhasil Dihapus!", {
+      autoClose: 2000,
+      type: toast.TYPE.SUCCESS,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      theme: 'colored',
+      icon: '✅'
+    } as ToastOptions)
+  }).catch((error) => {
+    toast("Gagal menghapus mahasiswa", {
+      autoClose: 1000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+    } as ToastOptions)
   })
 }
+
+
 </script>
 <template>
   <div class="container mx-auto px-4 py-8">

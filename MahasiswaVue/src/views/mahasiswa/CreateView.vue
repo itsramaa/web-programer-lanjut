@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { toast, type ToastOptions } from 'vue3-toastify'
 import api from '../../api/index'
 
 const router = useRouter()
@@ -18,13 +19,26 @@ const storeMhsData = async () => {
     nama: nama.value,
     ttl: ttl.value,
     gender: gender.value,
-    alamat: alamat.value
+    alamat: alamat.value,
   }
 
   try {
-    console.log('Creating mahasiswa data response:', await api.post('/api/mahasiswa', mahasiswaData))
-    router.push({ path: '/mahasiswa' })
+    await api.post('/api/mahasiswa', mahasiswaData)
+    toast('🎉 Mahasiswa Berhasil Ditambahkan!', {
+      autoClose: 2000,
+      type: toast.TYPE.SUCCESS,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      theme: 'colored',
+      icon: '✅',
+    } as ToastOptions)
+    setTimeout(() => {
+      router.push({ path: '/mahasiswa' })
+    }, 2000)
   } catch (error) {
+    toast('Gagal menambahkan mahasiswa', {
+      autoClose: 1000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+    } as ToastOptions)
     errors.value = error.response?.data || error
   }
 }
@@ -52,7 +66,7 @@ const storeMhsData = async () => {
       <div class="mb-4">
         <label for="nim" class="block text-white font-medium mb-2">NIM</label>
         <input
-          v-model='nim'
+          v-model="nim"
           type="text"
           id="nim"
           class="w-full px-3 py-2 bg-black text-white border border-green-700 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { toast, type ToastOptions } from 'vue3-toastify'
 import api from '../../api/index'
 
 const router = useRouter()
@@ -45,9 +46,22 @@ const updateMhsData = async () => {
   }
 
   try {
-    console.log('Updating mahasiswa data response:', await api.put(`/api/mahasiswa/${route.params.id}`, mahasiswaData))
-    router.push({ path: '/mahasiswa' })
+    await api.put(`/api/mahasiswa/${route.params.id}`, mahasiswaData)
+    toast("🎉 Mahasiswa Berhasil Diupdate!", {
+      autoClose: 2000,
+      type: toast.TYPE.SUCCESS,
+      position: toast.POSITION.BOTTOM_RIGHT,
+      theme: 'colored',
+      icon: '✅'
+    } as ToastOptions)
+    setTimeout(() => {
+      router.push({ path: '/mahasiswa' })
+    }, 2000)
   } catch (error) {
+    toast("Gagal mengupdate mahasiswa", {
+      autoClose: 1000,
+      position: toast.POSITION.BOTTOM_RIGHT,
+    } as ToastOptions)
     errors.value = error.response?.data || error
   }
 }
