@@ -11,7 +11,7 @@ const listMhs = ref([])
 // Method Fetch Data
 const fetchDataMhs = async () => {
   await api.get('/api/mahasiswa').then((response) => {
-    listMhs.value = response.data.data
+    listMhs.value = response.data.data.data
   })
 }
 

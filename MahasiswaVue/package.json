@@ -17,6 +17,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.15",
     "axios": "^1.12.2",
     "pinia": "^3.0.3",
     "tailwind": "^4.0.0",
